@@ -6,7 +6,6 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.Collections;
@@ -15,7 +14,7 @@ import java.util.Collections;
 @Configuration
 @EnableMongoRepositories({"org.tmp"})
 @Profile("production")
-public class ProductionMongoConfig extends AbstractMongoConfiguration {
+public class ProductionMongoConfig extends BaseConfig {
 
     @Override
     protected String getDatabaseName() {
