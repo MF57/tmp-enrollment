@@ -18,6 +18,11 @@ public class TestController {
     @Autowired
     TestService service;
 
+    @RequestMapping(value = "/api/hello", method = RequestMethod.GET)
+    public String insecureMethod() {
+        return "Hello, insecure method";
+    }
+
     @RequestMapping(value = "/api/tests", method = RequestMethod.POST)
     public void createTest(@RequestBody TestRequest request) {
         System.out.println("I'm in controller");
@@ -30,4 +35,5 @@ public class TestController {
                 .map(test -> new TestRequest(test.getName(), test.getMessage()))
                 .collect(Collectors.toList());
     }
+
 }
