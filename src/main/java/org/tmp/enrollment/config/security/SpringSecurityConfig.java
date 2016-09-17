@@ -23,15 +23,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .exceptionHandling().and()
-                .anonymous().and()
-                .servletApi().and()
-                .authorizeRequests()
+            .exceptionHandling().and()
+            .anonymous().and()
+            .servletApi().and()
+            .authorizeRequests()
                 .antMatchers("/").authenticated()
                 .antMatchers("/api/hello").permitAll()
-                .anyRequest().authenticated().and()
-                .addFilterBefore(statelessAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .headers().cacheControl();
+            .anyRequest().authenticated().and()
+            .addFilterBefore(statelessAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .headers().cacheControl();
 
     }
 
