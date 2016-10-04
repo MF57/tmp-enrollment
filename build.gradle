@@ -29,15 +29,26 @@ configurations {
 }
 
 dependencies {
+
+    // Spring-related
     compile("org.springframework.boot:spring-boot-starter-web:1.4.0.RELEASE")
     compile("org.springframework.boot:spring-boot-starter-jetty:1.4.0.RELEASE")
     compile("org.springframework.data:spring-data-mongodb:1.9.2.RELEASE")
-    compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.3.0'
     compile 'org.springframework.boot:spring-boot-starter-security:1.4.0.RELEASE'
+
+    // JDBC
+    compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.3.0'
+
+    // Tools
     compile 'io.jsonwebtoken:jjwt:0.6.0'
+
     compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
+
+    compileOnly "org.projectlombok:lombok:1.16.10"
+
+    // Test
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.4'
 }

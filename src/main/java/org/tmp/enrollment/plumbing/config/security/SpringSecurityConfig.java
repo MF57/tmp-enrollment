@@ -1,4 +1,4 @@
-package org.tmp.enrollment.config.security;
+package org.tmp.enrollment.plumbing.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

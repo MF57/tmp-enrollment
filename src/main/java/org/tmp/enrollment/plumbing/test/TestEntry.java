@@ -1,4 +1,4 @@
-package org.tmp.enrollment.test;
+package org.tmp.enrollment.plumbing.test;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;

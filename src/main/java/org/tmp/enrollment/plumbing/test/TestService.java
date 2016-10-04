@@ -1,4 +1,4 @@
-package org.tmp.enrollment.test;
+package org.tmp.enrollment.plumbing.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
