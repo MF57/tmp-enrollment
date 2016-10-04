@@ -1,4 +1,4 @@
 package org.tmp.enrollment.domain.actions;
 
-public class GetTournamentAction {
+public class TournamentActions {
 }
