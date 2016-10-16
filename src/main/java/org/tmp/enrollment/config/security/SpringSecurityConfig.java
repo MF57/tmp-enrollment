@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final String SECRET = "5efa4df7e3c8f9fb567b8f46b375931f";
+    private final String SECRET = "7fdf3a7d-77af-4507-a28b-58680d484cf1";
 
     public SpringSecurityConfig() {
         super(true);
