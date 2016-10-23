@@ -5,11 +5,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.tmp.enrollment.controller.dtos.UserTournaments;
-import org.tmp.enrollment.domain.entities.Tournament;
-import org.tmp.enrollment.domain.entities.User;
+import org.tmp.enrollment.domain.entities.*;
 import org.tmp.enrollment.service.TournamentService;
 import org.tmp.enrollment.service.UserService;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -47,6 +48,16 @@ public class TournamentController {
         tournament.setOrganizerName(userName);
         tournament.setId(null);
         return tournamentService.save(tournament);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public Tournament updateTournament(@RequestBody Tournament tournament, @PathVariable String id) {
+        return tournament;
+    }
+
+    @RequestMapping(value = "/enrollable", method = RequestMethod.GET)
+    public List<Tournament> getAllEnrollableForMe(Authentication authentication) {
+        return Collections.emptyList();
     }
 
     private String getUserName(Authentication authentication) {

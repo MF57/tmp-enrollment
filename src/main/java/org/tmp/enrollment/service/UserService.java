@@ -28,7 +28,6 @@ public class UserService {
 
     public User findUser(String name) {
         User byName = userRepository.findByName(name);
-        if(byName == null) log.info("User {} not found", name);
         return Optional.ofNullable(byName)
                 .orElseGet(() -> userRepository.save(new User(name)));
     }

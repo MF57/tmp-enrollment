@@ -1,5 +1,6 @@
 package org.tmp.enrollment.domain.entities;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -15,9 +16,10 @@ public class Tournament {
     private String name;
     private String place;
     private String description;
-    private String sport;
-    private String strategy;
-    private int capacity;
+    private Sport sport;
+    private Strategy strategy;
+    private TournamentState state;
+    private Capacity capacity;
     private Enrollment enrollment;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

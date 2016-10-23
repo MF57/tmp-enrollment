@@ -11,7 +11,6 @@ import java.util.List;
 public class User {
 
     public User(String name) {
-        log.info("Creating new user: {}", name);
         this.name = name;
         this.id = name;
     }
