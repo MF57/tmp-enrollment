@@ -47,9 +47,10 @@ dependencies {
     // Tools
     compile 'io.jsonwebtoken:jjwt:0.6.0'
 
-    compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.8.3'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.3'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.3'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.3'
 
     compileOnly "org.projectlombok:lombok:1.16.10"
 

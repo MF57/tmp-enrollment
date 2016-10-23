@@ -26,12 +26,12 @@ public class TournamentController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Tournament getTournamentById(@PathVariable("id") Long id) {
+    public Tournament getTournamentById(@PathVariable("id") String id) {
         return tournamentService.getById(id);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<Tournament> getByIds(@RequestBody List<Long> ids) {
+    public List<Tournament> getByIds(@RequestBody List<String> ids) {
         return tournamentService.getAllByIds(ids);
     }
 
@@ -42,14 +42,14 @@ public class TournamentController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public void createTournament(@RequestBody Tournament tournament, Authentication authentication) {
+    public Tournament createTournament(@RequestBody Tournament tournament, Authentication authentication) {
         String userName = getUserName(authentication);
         tournament.setOrganizerName(userName);
         tournament.setId(null);
-        tournamentService.save(tournament);
+        return tournamentService.save(tournament);
     }
 
     private String getUserName(Authentication authentication) {
-        return ((UserDetails) authentication.getPrincipal()).getUsername();
+        return ((org.tmp.enrollment.plumbing.config.security.User) authentication.getPrincipal()).getUsername();
     }
 }

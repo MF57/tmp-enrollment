@@ -22,8 +22,6 @@ public class UserController {
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public User getCurrentUser() {
         String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userService.findUser(currentUserName).orElseThrow(
-                () -> new UnknownUserException(currentUserName)
-        );
+        return userService.findUser(currentUserName);
     }
 }

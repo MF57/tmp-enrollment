@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.tmp.enrollment.data.TournamentRepository;
 import org.tmp.enrollment.domain.entities.Tournament;
+import org.tmp.enrollment.domain.entities.User;
 import org.tmp.enrollment.util.StreamUtil;
 
 import java.util.Collection;
@@ -15,27 +16,52 @@ import java.util.UUID;
 public class TournamentService {
 
     private final TournamentRepository tournamentRepository;
+    private final UserService userService;
 
     @Autowired
-    public TournamentService(TournamentRepository repository) {
+    public TournamentService(TournamentRepository repository, UserService userService) {
         this.tournamentRepository = repository;
+        this.userService = userService;
     }
 
-    public Tournament getById(Long id) {
-        Tournament tournament = new Tournament();
-        tournament.setId("1");
-        tournament.setOrganizerName("Janek");
-        return tournament;
+    public Tournament getById(String id) {
+        return tournamentRepository.findById(id);
     }
 
-    public void save(Tournament tournament) {
+    public Tournament save(Tournament tournament) {
         if(isNewTournament(tournament)) {
-            tournament.setId(UUID.randomUUID().toString());
+            generateAndSetID(tournament);
+            updateOrganizer(tournament);
         }
-        tournamentRepository.save(tournament);
+        updateParticipants(tournament);
+
+        return tournamentRepository.save(tournament);
     }
 
-    public List<Tournament> getAllByIds(Collection<Long> ids) {
+    private void updateParticipants(Tournament tournament) {
+        if(tournament.getEnrollment() != null) {
+            tournament.getEnrollment().getEnrolledParticipantNames().stream()
+                    .forEach(participantName -> updateParticipant(participantName, tournament));
+        }
+    }
+
+    private void generateAndSetID(Tournament tournament) {
+        tournament.setId(UUID.randomUUID().toString());
+    }
+
+    private void updateOrganizer(Tournament tournament) {
+        User organizer = userService.findUser(tournament.getOrganizerName());
+        organizer.getOrganizedTournamentIds().add(tournament.getId());
+        userService.saveUser(organizer);
+    }
+
+    private void updateParticipant(String participantName, Tournament tournament) {
+        User participant = userService.findUser(participantName);
+        participant.getParticipatingTournamentIds().add(tournament.getId());
+        userService.saveUser(participant);
+    }
+
+    public List<Tournament> getAllByIds(Collection<String> ids) {
         return StreamUtil.mapToList(ids, this::getById);
     }
 

@@ -16,5 +16,5 @@ public class Enrollment {
     private LocalDateTime enrollmentEndDataTime;
 
     @Getter @Setter
-    private List<User> enrolledParticipants;
+    private List<String> enrolledParticipantNames;
 }

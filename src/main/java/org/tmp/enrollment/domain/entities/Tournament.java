@@ -2,19 +2,21 @@ package org.tmp.enrollment.domain.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
 @Getter @Setter
 public class Tournament {
 
+    @Id
     private String id;
     private String organizerName;
-    private TournamentName name;
-    private Location location;
-    private TournamentDescription description;
-    private Sport sport;
-    private Strategy strategy;
+    private String name;
+    private String place;
+    private String description;
+    private String sport;
+    private String strategy;
     private int capacity;
     private Enrollment enrollment;
     private LocalDateTime startTime;
