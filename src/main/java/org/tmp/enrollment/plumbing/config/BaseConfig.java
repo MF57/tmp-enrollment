@@ -1,4 +1,4 @@
-package org.tmp.enrollment.config;
+package org.tmp.enrollment.plumbing.config;
 
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 

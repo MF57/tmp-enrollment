@@ -1,4 +1,4 @@
-package org.tmp.enrollment.test;
+package org.tmp.enrollment.plumbing.test;
 
 /**
  * Created by mf57 on 14.08.2016.

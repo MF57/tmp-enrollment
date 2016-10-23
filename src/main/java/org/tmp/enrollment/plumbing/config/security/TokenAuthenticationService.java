@@ -1,4 +1,4 @@
-package org.tmp.enrollment.config.security;
+package org.tmp.enrollment.plumbing.config.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

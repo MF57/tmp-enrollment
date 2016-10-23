@@ -1,4 +1,4 @@
-package org.tmp.enrollment.config.security;
+package org.tmp.enrollment.plumbing.config.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

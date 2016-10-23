@@ -1,4 +1,4 @@
-package org.tmp.enrollment.config;
+package org.tmp.enrollment.plumbing.config;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
