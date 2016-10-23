@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 @Getter @Setter
 public class Tournament {
 
-    private Long tournamentId;
+    private String id;
     private String organizerName;
-    private TournamentName tournamentName;
+    private TournamentName name;
     private Location location;
-    private TournamentDescription tournamentDescription;
+    private TournamentDescription description;
     private Sport sport;
     private Strategy strategy;
     private int capacity;

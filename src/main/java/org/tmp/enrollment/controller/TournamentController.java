@@ -1,30 +1,55 @@
 package org.tmp.enrollment.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.tmp.enrollment.controller.dtos.UserTournaments;
 import org.tmp.enrollment.domain.entities.Tournament;
+import org.tmp.enrollment.domain.entities.User;
 import org.tmp.enrollment.service.TournamentService;
+import org.tmp.enrollment.service.UserService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/enrollment/tournaments")
+@RequestMapping("/api/tournaments")
 public class TournamentController {
 
-    private final TournamentService service;
+    private final TournamentService tournamentService;
+    private final UserService userService;
 
     @Autowired
-    public TournamentController(TournamentService service) {
-        this.service = service;
+    public TournamentController(TournamentService tournamentService, UserService userService) {
+        this.tournamentService = tournamentService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Tournament getTournamentById(@PathVariable("id") Long id) {
-        return service.getById(id);
+        return tournamentService.getById(id);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<Tournament> getByIds(@RequestBody List<Long> ids) {
-        return service.getAllByIds(ids);
+        return tournamentService.getAllByIds(ids);
+    }
+
+    @RequestMapping(value = "/my", method = RequestMethod.GET)
+    public UserTournaments getMyTournaments(Authentication authentication) {
+        String myUserName = getUserName(authentication);
+        return userService.getTournamentsForUser(myUserName);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public void createTournament(@RequestBody Tournament tournament, Authentication authentication) {
+        String userName = getUserName(authentication);
+        tournament.setOrganizerName(userName);
+        tournament.setId(null);
+        tournamentService.save(tournament);
+    }
+
+    private String getUserName(Authentication authentication) {
+        return ((UserDetails) authentication.getPrincipal()).getUsername();
     }
 }

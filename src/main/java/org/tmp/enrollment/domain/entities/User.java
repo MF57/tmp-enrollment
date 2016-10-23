@@ -8,6 +8,6 @@ import java.util.List;
 public class User {
 
     private String name;
-    private List<Long> organizedTournamentIds;
-    private List<Long> participatingTournamentIds;
+    private List<String> organizedTournamentIds;
+    private List<String> participatingTournamentIds;
 }
