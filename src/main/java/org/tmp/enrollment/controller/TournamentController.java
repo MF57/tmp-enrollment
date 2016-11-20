@@ -5,7 +5,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.tmp.enrollment.controller.dtos.UserTournaments;
+import org.tmp.enrollment.controller.error.TournamentDoesNotExist;
+import org.tmp.enrollment.controller.error.TournamentException;
+import org.tmp.enrollment.controller.error.Unauthorized;
 import org.tmp.enrollment.domain.entities.*;
+import org.tmp.enrollment.domain.validations.error.TournamentModificationError;
 import org.tmp.enrollment.service.TournamentService;
 import org.tmp.enrollment.service.UserService;
 
@@ -51,13 +55,24 @@ public class TournamentController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public Tournament updateTournament(@RequestBody Tournament tournament, @PathVariable String id) {
-        return tournament;
+    public Tournament updateTournament(@RequestBody Tournament tournament, @PathVariable String id, Authentication authentication) throws TournamentException {
+        Tournament byId = tournamentService.getById(id);
+        if(byId == null) {
+            throw new TournamentDoesNotExist();
+        } else if(!canModify(getUserName(authentication), byId)) {
+            throw new Unauthorized("You cannot modify tournament you are not organizer of!");
+        } else {
+            return tournamentService.update(tournament);
+        }
     }
 
     @RequestMapping(value = "/enrollable", method = RequestMethod.GET)
     public List<Tournament> getAllEnrollableForMe(Authentication authentication) {
         return Collections.emptyList();
+    }
+
+    private boolean canModify(String userName, Tournament byId) {
+        return byId.getOrganizerName().equals(userName);
     }
 
     private String getUserName(Authentication authentication) {

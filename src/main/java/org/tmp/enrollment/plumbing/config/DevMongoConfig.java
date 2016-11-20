@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  */
 @Configuration
 @EnableMongoRepositories({"org.tmp"})
-@Profile("development")
+@Profile({"development", "integration"})
 public class DevMongoConfig extends BaseConfig {
 
     @Override
@@ -21,6 +21,8 @@ public class DevMongoConfig extends BaseConfig {
 
     @Override
     public Mongo mongo() throws Exception {
-        return new MongoClient("localhost", 27017);
+        MongoClient mongoClient = new MongoClient("localhost", 27017);
+        mongoClient.getDatabase(getDatabaseName()).drop();
+        return mongoClient;
     }
 }

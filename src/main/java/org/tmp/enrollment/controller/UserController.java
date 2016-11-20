@@ -5,7 +5,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.tmp.enrollment.controller.error.UnknownUserException;
 import org.tmp.enrollment.domain.entities.User;
 import org.tmp.enrollment.service.UserService;
 

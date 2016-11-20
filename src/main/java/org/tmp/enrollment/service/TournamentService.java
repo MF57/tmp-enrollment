@@ -6,6 +6,8 @@ import org.springframework.util.StringUtils;
 import org.tmp.enrollment.data.TournamentRepository;
 import org.tmp.enrollment.domain.entities.Tournament;
 import org.tmp.enrollment.domain.entities.User;
+import org.tmp.enrollment.domain.validations.TournamentChangeValidation;
+import org.tmp.enrollment.domain.validations.error.TournamentModificationError;
 import org.tmp.enrollment.util.StreamUtil;
 
 import java.util.Collection;
@@ -17,11 +19,13 @@ public class TournamentService {
 
     private final TournamentRepository tournamentRepository;
     private final UserService userService;
+    private final TournamentChangeValidation tournamentValidator;
 
     @Autowired
-    public TournamentService(TournamentRepository repository, UserService userService) {
+    public TournamentService(TournamentRepository repository, UserService userService, TournamentChangeValidation validation) {
         this.tournamentRepository = repository;
         this.userService = userService;
+        this.tournamentValidator = validation;
     }
 
     public Tournament getById(String id) {
@@ -36,6 +40,13 @@ public class TournamentService {
         updateParticipants(tournament);
 
         return tournamentRepository.save(tournament);
+    }
+
+    public Tournament update(Tournament updatedTournament) throws TournamentModificationError {
+        String tournamentId = updatedTournament.getId();
+        Tournament original = tournamentRepository.findById(tournamentId);
+        tournamentValidator.validate(original, updatedTournament);
+        return tournamentRepository.save(updatedTournament);
     }
 
     private void updateParticipants(Tournament tournament) {

@@ -34,12 +34,12 @@ public class UserService {
 
     public UserTournaments getTournamentsForUser(String userName) {
         List<Tournament> userParticipatedTournaments = Optional.ofNullable(findUser(userName).getParticipatingTournamentIds())
-                .map(this::getTournamebts)
+                .map(this::getTournamentsByIds)
                 .orElse(Collections.emptyList());
 
 
         List<Tournament> userOrganizedTournaments = Optional.ofNullable(findUser(userName).getOrganizedTournamentIds())
-                .map(this::getTournamebts)
+                .map(this::getTournamentsByIds)
                 .orElse(Collections.emptyList());
 
         return new UserTournaments(userName, userOrganizedTournaments, userParticipatedTournaments);
@@ -49,7 +49,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private List<Tournament> getTournamebts(List<String> ids) {
+    private List<Tournament> getTournamentsByIds(List<String> ids) {
         return ids.stream()
                 .map(tournamentRepository::findById)
                 .collect(Collectors.toList());
