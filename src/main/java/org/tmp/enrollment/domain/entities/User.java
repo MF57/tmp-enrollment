@@ -15,7 +15,9 @@ public class User {
         this.id = name;
     }
 
+    @Id
     private String id;
+
     private String name;
     private List<String> organizedTournamentIds = new ArrayList<>();
     private List<String> participatingTournamentIds = new ArrayList<>();

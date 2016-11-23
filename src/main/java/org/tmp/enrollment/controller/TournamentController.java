@@ -68,7 +68,7 @@ public class TournamentController {
 
     @RequestMapping(value = "/enrollable", method = RequestMethod.GET)
     public List<Tournament> getAllEnrollableForMe(Authentication authentication) {
-        return Collections.emptyList();
+        return tournamentService.getEnrollableFor(getUserName(authentication));
     }
 
     private boolean canModify(String userName, Tournament byId) {

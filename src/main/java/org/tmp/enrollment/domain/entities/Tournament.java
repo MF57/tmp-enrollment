@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Setter
 public class Tournament {
@@ -18,6 +19,7 @@ public class Tournament {
     private Sport sport;
     private Strategy strategy;
     private TournamentState state;
+    private List<String> referees;
     private Capacity capacity;
     private Enrollment enrollment;
     private LocalDateTime startTime;

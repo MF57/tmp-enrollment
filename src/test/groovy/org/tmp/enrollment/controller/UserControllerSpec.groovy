@@ -12,7 +12,7 @@ import spock.lang.Specification
 
 @SpringBootTest
 @ActiveProfiles("integration")
-class UserControllerTest extends Specification {
+class UserControllerSpec extends Specification {
 
     @Autowired
     TournamentController tournamentController
@@ -23,7 +23,6 @@ class UserControllerTest extends Specification {
 
         given: 'initially empty list of tournaments'
             def initialList = tournamentController.getMyTournaments(authentication)
-
 
         when:
             tournamentController.createTournament(createTournament(), authentication)

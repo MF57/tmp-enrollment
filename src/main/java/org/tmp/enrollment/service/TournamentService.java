@@ -1,18 +1,19 @@
 package org.tmp.enrollment.service;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.tmp.enrollment.data.TournamentRepository;
+import org.tmp.enrollment.domain.entities.Enrollment;
 import org.tmp.enrollment.domain.entities.Tournament;
 import org.tmp.enrollment.domain.entities.User;
+import org.tmp.enrollment.domain.filters.TournamentFilters;
 import org.tmp.enrollment.domain.validations.TournamentChangeValidation;
 import org.tmp.enrollment.domain.validations.error.TournamentModificationError;
 import org.tmp.enrollment.util.StreamUtil;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class TournamentService {
@@ -20,12 +21,15 @@ public class TournamentService {
     private final TournamentRepository tournamentRepository;
     private final UserService userService;
     private final TournamentChangeValidation tournamentValidator;
+    private final TournamentFilters filters;
 
     @Autowired
-    public TournamentService(TournamentRepository repository, UserService userService, TournamentChangeValidation validation) {
+    public TournamentService(TournamentRepository repository, UserService userService,
+                             TournamentChangeValidation validation, TournamentFilters filters) {
         this.tournamentRepository = repository;
         this.userService = userService;
         this.tournamentValidator = validation;
+        this.filters = filters;
     }
 
     public Tournament getById(String id) {
@@ -50,10 +54,11 @@ public class TournamentService {
     }
 
     private void updateParticipants(Tournament tournament) {
-        if(tournament.getEnrollment() != null) {
-            tournament.getEnrollment().getEnrolledParticipantNames().stream()
-                    .forEach(participantName -> updateParticipant(participantName, tournament));
-        }
+        Optional.ofNullable(tournament)
+                .map(Tournament::getEnrollment)
+                .map(Enrollment::getEnrolledParticipantIds)
+                .orElse(Collections.emptyList())
+                .forEach(participantName -> updateParticipant(participantName, tournament));
     }
 
     private void generateAndSetID(Tournament tournament) {
@@ -78,5 +83,9 @@ public class TournamentService {
 
     private boolean isNewTournament(Tournament tournament) {
         return StringUtils.isEmpty(tournament.getId());
+    }
+
+    public List<Tournament> getEnrollableFor(String userName) {
+        return StreamUtil.filter(tournamentRepository.findAll(), filters.enrollableFor(userName));
     }
 }
