@@ -35,7 +35,7 @@ public class TournamentController {
         return tournamentService.getById(id);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<Tournament> getByIds(@RequestBody List<String> ids) {
         return tournamentService.getAllByIds(ids);
     }
@@ -46,9 +46,9 @@ public class TournamentController {
         return userService.getTournamentsForUser(myUserName);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public Tournament createTournament(@RequestBody Tournament tournament, Authentication authentication) {
-        String userName = getUserName(authentication);
+         String userName = getUserName(authentication);
         tournament.setOrganizerName(userName);
         tournament.setId(null);
         return tournamentService.save(tournament);
