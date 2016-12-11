@@ -48,8 +48,9 @@ public class TournamentController {
 
     @RequestMapping(method = RequestMethod.POST)
     public Tournament createTournament(@RequestBody Tournament tournament, Authentication authentication) {
-         String userName = getUserName(authentication);
+        String userName = getUserName(authentication);
         tournament.setOrganizerName(userName);
+        tournament.setState(TournamentState.CREATED);
         tournament.setId(null);
         return tournamentService.save(tournament);
     }

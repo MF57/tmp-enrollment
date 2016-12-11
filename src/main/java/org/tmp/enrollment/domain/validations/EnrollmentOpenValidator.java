@@ -39,7 +39,6 @@ public class EnrollmentOpenValidator implements TournamentChangeValidation {
     }
 
     private boolean notYetOpened(Tournament original) {
-        return original.getState() == TournamentState.CREATED
-                || original.getState() == TournamentState.DEFINED;
+        return original.getState() == TournamentState.CREATED;
     }
 }
