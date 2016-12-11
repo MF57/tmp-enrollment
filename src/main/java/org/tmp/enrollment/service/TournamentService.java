@@ -1,6 +1,7 @@
 package org.tmp.enrollment.service;
 
 import com.google.common.collect.Lists;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -51,6 +52,10 @@ public class TournamentService {
         Tournament original = tournamentRepository.findById(tournamentId);
         tournamentValidator.validate(original, updatedTournament);
         return tournamentRepository.save(updatedTournament);
+    }
+
+    public void delete(String tournamentId) {
+        tournamentRepository.delete(tournamentId);
     }
 
     private void updateParticipants(Tournament tournament) {

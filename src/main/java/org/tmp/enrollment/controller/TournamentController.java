@@ -67,6 +67,21 @@ public class TournamentController {
         }
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteTournament(@PathVariable String id, Authentication authentication) throws TournamentException {
+        Tournament tournament = tournamentService.getById(id);
+        if(tournament == null) {
+            throw new TournamentDoesNotExist();
+        } else if(!canModify(getUserName(authentication), tournament)) {
+            throw new Unauthorized("You cannot modify tournament you are not organizer of!");
+        } else {
+            tournamentService.delete(id);
+        }
+    }
+
+
+
+
     @RequestMapping(value = "/enrollable", method = RequestMethod.GET)
     public List<Tournament> getAllEnrollableForMe(Authentication authentication) {
         return tournamentService.getEnrollableFor(getUserName(authentication));
