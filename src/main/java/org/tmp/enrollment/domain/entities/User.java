@@ -21,4 +21,13 @@ public class User {
     private String name;
     private List<String> organizedTournamentIds = new ArrayList<>();
     private List<String> participatingTournamentIds = new ArrayList<>();
+
+
+    public void removeOrganizedTournamentId(String id) {
+        organizedTournamentIds.remove(id);
+    }
+
+    public void removeParticipatingTournamentId(String id) {
+        participatingTournamentIds.remove(id);
+    }
 }

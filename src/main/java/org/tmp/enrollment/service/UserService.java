@@ -52,6 +52,7 @@ public class UserService {
     private List<Tournament> getTournamentsByIds(List<String> ids) {
         return ids.stream()
                 .map(tournamentRepository::findById)
+                .filter(tournament -> tournament == null)
                 .collect(Collectors.toList());
     }
 }

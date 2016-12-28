@@ -76,6 +76,10 @@ public class TournamentController {
             throw new Unauthorized("You cannot modify tournament you are not organizer of!");
         } else {
             tournamentService.delete(id);
+            User user = userService.findUser(getUserName(authentication));
+            user.removeOrganizedTournamentId(id);
+            userService.saveUser(user);
+
         }
     }
 
