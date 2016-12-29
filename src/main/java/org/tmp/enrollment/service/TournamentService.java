@@ -1,7 +1,5 @@
 package org.tmp.enrollment.service;
 
-import com.google.common.collect.Lists;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -10,7 +8,7 @@ import org.tmp.enrollment.domain.entities.Enrollment;
 import org.tmp.enrollment.domain.entities.Tournament;
 import org.tmp.enrollment.domain.entities.User;
 import org.tmp.enrollment.domain.filters.TournamentFilters;
-import org.tmp.enrollment.domain.validations.TournamentChangeValidation;
+import org.tmp.enrollment.domain.validations.TournamentEditionAction;
 import org.tmp.enrollment.domain.validations.error.TournamentModificationError;
 import org.tmp.enrollment.util.StreamUtil;
 
@@ -21,15 +19,15 @@ public class TournamentService {
 
     private final TournamentRepository tournamentRepository;
     private final UserService userService;
-    private final TournamentChangeValidation tournamentValidator;
+    private final TournamentEditionAction enrollmentOpener;
     private final TournamentFilters filters;
 
     @Autowired
     public TournamentService(TournamentRepository repository, UserService userService,
-                             TournamentChangeValidation validation, TournamentFilters filters) {
+                             TournamentEditionAction action, TournamentFilters filters) {
         this.tournamentRepository = repository;
         this.userService = userService;
-        this.tournamentValidator = validation;
+        this.enrollmentOpener = action;
         this.filters = filters;
     }
 
@@ -50,7 +48,7 @@ public class TournamentService {
     public Tournament update(Tournament updatedTournament) throws TournamentModificationError {
         String tournamentId = updatedTournament.getId();
         Tournament original = tournamentRepository.findById(tournamentId);
-        tournamentValidator.validate(original, updatedTournament);
+        enrollmentOpener.performAction(original, updatedTournament);
         return tournamentRepository.save(updatedTournament);
     }
 
