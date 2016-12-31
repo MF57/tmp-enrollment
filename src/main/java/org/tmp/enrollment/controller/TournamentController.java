@@ -2,19 +2,15 @@ package org.tmp.enrollment.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.tmp.enrollment.controller.dtos.UserTournaments;
 import org.tmp.enrollment.controller.error.TournamentDoesNotExist;
 import org.tmp.enrollment.controller.error.TournamentException;
 import org.tmp.enrollment.controller.error.Unauthorized;
 import org.tmp.enrollment.domain.entities.*;
-import org.tmp.enrollment.domain.validations.error.TournamentModificationError;
 import org.tmp.enrollment.service.TournamentService;
 import org.tmp.enrollment.service.UserService;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -84,6 +80,14 @@ public class TournamentController {
     }
 
 
+    @RequestMapping(value = "/{id}/enroll", method = RequestMethod.PUT)
+    public void enroll(@PathVariable String id, Authentication authentication) throws TournamentException {
+        Tournament byId = tournamentService.getById(id);
+        if(byId == null) {
+            throw new TournamentDoesNotExist();
+        }
+        tournamentService.enrollUserForTournament(byId, getUserName(authentication));
+    }
 
 
     @RequestMapping(value = "/enrollable", method = RequestMethod.GET)

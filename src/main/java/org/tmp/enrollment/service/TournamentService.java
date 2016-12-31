@@ -3,6 +3,7 @@ package org.tmp.enrollment.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.tmp.enrollment.controller.error.TournamentException;
 import org.tmp.enrollment.data.TournamentRepository;
 import org.tmp.enrollment.domain.entities.Enrollment;
 import org.tmp.enrollment.domain.entities.Tournament;
@@ -56,6 +57,21 @@ public class TournamentService {
         tournamentRepository.delete(tournamentId);
     }
 
+    public void enrollUserForTournament(Tournament tournament, String userName) throws TournamentException {
+        List<String> enrolledParticipantIds = tournament.getEnrollment().getEnrolledParticipantIds();
+        if (tournament.getCapacity().getParticipantCount() == enrolledParticipantIds.size()) {
+            throw new TournamentException("Maximum capacity of tournament reached");
+        }
+
+        if (enrolledParticipantIds.contains(userName)) {
+            throw new TournamentException("User already enrolled to this enrollment");
+        }
+
+        enrolledParticipantIds.add(userName);
+        updateParticipant(userName, tournament);
+        tournamentRepository.save(tournament);
+    }
+
     private void updateParticipants(Tournament tournament) {
         Optional.ofNullable(tournament)
                 .map(Tournament::getEnrollment)
@@ -91,4 +107,6 @@ public class TournamentService {
     public List<Tournament> getEnrollableFor(String userName) {
         return StreamUtil.filter(tournamentRepository.findAll(), filters.enrollableFor(userName));
     }
+
+
 }
