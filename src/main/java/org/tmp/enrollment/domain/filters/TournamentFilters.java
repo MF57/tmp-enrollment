@@ -21,9 +21,11 @@ public class TournamentFilters {
     public Predicate<Tournament> enrollableFor(String userName) {
         return open()
                 .and(not(full()))
+                .and(not(isParticipant(userName)))
                 .and(not(isOrganizer(userName)))
                 .and(not(isReferee(userName)));
     }
+
 
     public Predicate<Tournament> open() {
         return tournament -> tournament.getState() == TournamentState.ENROLLMENT_OPEN;
@@ -51,6 +53,10 @@ public class TournamentFilters {
               }
           }
         };
+    }
+
+    private Predicate<Tournament> isParticipant(String userName) {
+        return tournament -> tournament.getEnrollment().getEnrolledParticipantIds().contains(userName);
     }
 
     public Predicate<Tournament> isOrganizer(String userName) {
