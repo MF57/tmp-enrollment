@@ -1,5 +1,6 @@
 package org.tmp.enrollment.domain.validations;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.tmp.enrollment.domain.entities.Enrollment;
 import org.tmp.enrollment.domain.entities.Tournament;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @Component
+@Qualifier("opener")
 public class EnrollmentOpenAction implements TournamentEditionAction {
 
     @Override

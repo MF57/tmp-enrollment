@@ -1,6 +1,7 @@
 package org.tmp.enrollment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.tmp.enrollment.controller.error.TournamentException;
@@ -20,15 +21,18 @@ public class TournamentService {
 
     private final TournamentRepository tournamentRepository;
     private final UserService userService;
-    private final TournamentEditionAction enrollmentOpener;
     private final TournamentFilters filters;
+    private final TournamentEditionAction enrollmentOpener;
+    private final TournamentEditionAction enrollmentCloser;
 
     @Autowired
     public TournamentService(TournamentRepository repository, UserService userService,
-                             TournamentEditionAction action, TournamentFilters filters) {
+                             @Qualifier("opener") TournamentEditionAction opener,
+                             @Qualifier("closer") TournamentEditionAction closer, TournamentFilters filters) {
         this.tournamentRepository = repository;
         this.userService = userService;
-        this.enrollmentOpener = action;
+        this.enrollmentOpener = opener;
+        this.enrollmentCloser = closer;
         this.filters = filters;
     }
 
@@ -50,6 +54,7 @@ public class TournamentService {
         String tournamentId = updatedTournament.getId();
         Tournament original = tournamentRepository.findById(tournamentId);
         enrollmentOpener.performAction(original, updatedTournament);
+        enrollmentCloser.performAction(original, updatedTournament);
         return tournamentRepository.save(updatedTournament);
     }
 
